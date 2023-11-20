@@ -20,8 +20,16 @@ export const Wrapper = styled.div`
     td {
         font-size: 0.8;
     }
-    .mgl {
+    .primary-btn {
         background-color: var(--main-color)
+    }
+    .secondary-btn{
+        color: var(--main-color);
+        border-color: var(--main-color);
+        font-weight: 500;
+    }
+    label{
+        color: rgba(6, 24, 78);
     }
 `
 
@@ -67,6 +75,7 @@ export const Container = styled.div`
     border-radius: 20px;
     padding: 0 20px;
 `
+
 export const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
@@ -77,7 +86,8 @@ export const UserFunction = styled.div`
     display: flex;
     align-items: center;
     & .mgl{
-        margin-left: 10px
+        margin-left: 10px;
+        white-space: nowrap
     }
     & .btn-search{
         padding: 12px;
@@ -87,4 +97,11 @@ export const UserFunction = styled.div`
 
 export const SearchOptions = styled.div`
     display: block;
+`
+
+export const ModalAdd = styled.div`
+    margin: auto;
+    max-width: 815px;
+    max-height: none;
+    overflow-y: initial
 `

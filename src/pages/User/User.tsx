@@ -16,7 +16,6 @@ import {
   badgeClasses,
   Box,
   Button,
-  MenuItem,
   TextField,
   styled,
   Grid,
@@ -26,13 +25,19 @@ import {
   TableRow,
   TableCell,
   Table,
-  FormControl,
-  Select,
+  Checkbox,
+  FormControlLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Stack,
 } from "@mui/material";
+import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 const Badge = styled(BaseBadge)(
   () => `
@@ -114,22 +119,41 @@ const User = () => {
     "User Status",
   ];
   const [isSearched, setIsSearched] = useState(true);
+  const [popup, setPopup] = useState(false);
+  const {handleSubmit, control } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      address: ""
+    }
+  })
   return (
     <>
       <Wrapper>
         <Header>
           <div className="header-left">
             <Logo src={logo}></Logo>
-            <Box width={"248px"}>
-              <TextField id="standard-select-currency" select label="All facilities" fullWidth>
-                {facilities.map((facility) => {
-                  return (
-                    <MenuItem value={facility.id} key={facility.id}>
-                      {facility.name}
-                    </MenuItem>
-                  );
+            <Box width={"248px"} height="46px">
+              <Select
+                className="basic-single"
+                classNamePrefix="select"
+                isSearchable
+                name="facilities"
+                options={facilities.map((facility) => {
+                  return {
+                    value: facility.id,
+                    label: facility.name,
+                  };
                 })}
-              </TextField>
+                placeholder="All facilities"
+                styles={{
+                  control: (baseStyles) => ({
+                    ...baseStyles,
+                    width: "250px",
+                    height: "48px",
+                  }),
+                }}
+              />
             </Box>
           </div>
           <UserRef>
@@ -158,7 +182,7 @@ const User = () => {
                 </Box>
                 <UserFunction>
                   <Button
-                    className="btn-search"
+                    className="btn-search mgl"
                     onClick={() => {
                       setIsSearched((prev) => !prev);
                     }}
@@ -170,21 +194,25 @@ const User = () => {
                         </svg>
                       </SvgIcon>
                     ) : (
-                      <Button variant="outlined">Close Search</Button>
+                      <Button className="secondary-btn" variant="outlined">
+                        Close Search
+                      </Button>
                     )}
                   </Button>
                   <Box>
-                    <Button className="mgl" variant="contained">
+                    <Button className="mgl primary-btn" variant="contained">
                       Add patient
                     </Button>
                   </Box>
                   <Box>
-                    <Button className="mgl" variant="contained">
+                    <Button className="mgl primary-btn" variant="contained" onClick={()=>{
+                      setPopup(prev=>!prev)
+                    }}>
                       Add user
                     </Button>
                   </Box>
                   <Box>
-                    <Button className="mgl" variant="contained">
+                    <Button className="mgl primary-btn" variant="contained">
                       Invite user
                     </Button>
                   </Box>
@@ -199,34 +227,95 @@ const User = () => {
                       .filter((col) => ["Username", "Name", "Email", "Phone"].includes(col))
                       .map((col, indx) => (
                         <Grid key={indx} item xs={4}>
-                          <label htmlFor="">{`${col}:`}</label>
-                          <br></br>
-                          <TextField fullWidth></TextField>
+                          <Box>
+                            <label htmlFor="">{`${col}:`}</label>
+                            <br></br>
+                            <TextField fullWidth></TextField>
+                          </Box>
                         </Grid>
                       ))}
                     <Grid item xs={4}>
-                      <label htmlFor="">{`Role:`}</label>
-                      <br></br>
-                      <FormControl sx={{ m: 1, minWidth: 120 }}>
+                      <Box>
+                        <label htmlFor="">{`Role:`}</label>
+                        <br></br>
                         <Select
-                          value=""
-                          // onChange={handleChange}
-                          displayEmpty
-                          inputProps={{ "aria-label": "Without label" }}
-                          renderValue={value => value?.length ? Array.isArray(value) ? value.join(', ') : value : 'Select...'}
-                          sx={{color: 'grey'}}
-                          fullWidth
-                        >
-                          <MenuItem value={10}>role1</MenuItem>
-                          <MenuItem value={20}>role2</MenuItem>
-                          <MenuItem value={30}>role3</MenuItem>
-                        </Select>
-                      </FormControl>
+                          isMulti
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          isSearchable
+                          name="colors"
+                          options={[
+                            { value: "1", label: "role0" },
+                            { value: "12", label: "role2" },
+                            { value: "123", label: "role323" },
+                          ]}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              minHeight: "53.7px",
+                            }),
+                          }}
+                        />
+                      </Box>
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="">{`Role:`}</label>
-                      <br></br>
-                      <TextField fullWidth children label="Select..."></TextField>
+                      <Box>
+                        <label htmlFor="">{`Status:`}</label>
+                        <br></br>
+
+                        <Select
+                          isMulti
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          isSearchable
+                          name="colors"
+                          options={[
+                            { value: "1", label: "role0" },
+                            { value: "12", label: "role2" },
+                            { value: "123", label: "role323" },
+                            { value: "1w", label: "role0" },
+                            { value: "1w2", label: "role2" },
+                            { value: "12d3", label: "role323" },
+                          ]}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              minHeight: "53.7px",
+                            }),
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Box>
+                        <label htmlFor="">{`Level:`}</label>
+                        <br></br>
+
+                        <Select
+                          isClearable
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          isSearchable
+                          name="colors"
+                          options={[
+                            { value: "1", label: "role0" },
+                            { value: "12", label: "role2" },
+                            { value: "123", label: "role323" },
+                            { value: "1w", label: "role0" },
+                            { value: "1w2", label: "role2" },
+                            { value: "12d3", label: "role323" },
+                          ]}
+                          styles={{
+                            control: (baseStyles) => ({
+                              ...baseStyles,
+                              minHeight: "53.7px",
+                            }),
+                          }}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <FormControlLabel control={<Checkbox defaultChecked />} label="Is Moderator" />
                     </Grid>
                   </Grid>
                 </SearchOptions>
@@ -272,6 +361,24 @@ const User = () => {
             </Grid>
           </Grid>
         </Container>
+        <>
+          <Dialog open={popup} onClose={()=>{
+            setPopup(prev => !prev)
+          }} fullWidth>
+          <DialogTitle>Add User</DialogTitle>
+          <DialogContent>
+            <form
+              onSubmit={handleSubmit((data) => {
+                  console.log(data)
+              })}
+            >
+              <Grid>
+                
+              </Grid>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </>
       </Wrapper>
     </>
   );

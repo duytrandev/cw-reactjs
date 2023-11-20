@@ -17,4 +17,8 @@ body a {
 html {
   font-size: 90%;
   font-family: Poppins, sans-serif;
+}
+
+.select__control {
+  height: 100%;
 }/*# sourceMappingURL=Globalstyles.css.map */
