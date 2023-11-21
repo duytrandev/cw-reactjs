@@ -1,10 +1,13 @@
 import {
   Avatar,
   Container,
+  DialogStyled,
   Header,
   HeaderContainer,
   InfoUser,
   Logo,
+  ModalButtonForm,
+  ModalHeader,
   SearchOptions,
   UserFunction,
   UserRef,
@@ -27,17 +30,16 @@ import {
   Table,
   Checkbox,
   FormControlLabel,
-  Dialog,
   DialogTitle,
-  DialogContent,
-  Stack,
+  DialogContent
 } from "@mui/material";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Badge = styled(BaseBadge)(
   () => `
@@ -120,13 +122,14 @@ const User = () => {
   ];
   const [isSearched, setIsSearched] = useState(true);
   const [popup, setPopup] = useState(false);
-  const {handleSubmit, control } = useForm({
+  const [selectedButton, setSelectedButton] = useState(null);
+  const { handleSubmit } = useForm({
     defaultValues: {
       name: "",
       email: "",
-      address: ""
-    }
-  })
+      address: "",
+    },
+  });
   return (
     <>
       <Wrapper>
@@ -181,33 +184,39 @@ const User = () => {
                   <h1>User</h1>
                 </Box>
                 <UserFunction>
-                  <Button
+                  <div
                     className="btn-search mgl"
-                    onClick={() => {
-                      setIsSearched((prev) => !prev);
-                    }}
                   >
                     {isSearched === false ? (
-                      <SvgIcon>
+                      <SvgIcon onClick={() => {
+                        setIsSearched((prev) => !prev);
+                      }}>
                         <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                         </svg>
+
                       </SvgIcon>
                     ) : (
-                      <Button className="secondary-btn" variant="outlined">
+                      <Button onClick={() => {
+                        setIsSearched((prev) => !prev);
+                      }} className="secondary-btn" variant="outlined">
                         Close Search
                       </Button>
                     )}
-                  </Button>
+                  </div>
                   <Box>
                     <Button className="mgl primary-btn" variant="contained">
                       Add patient
                     </Button>
                   </Box>
                   <Box>
-                    <Button className="mgl primary-btn" variant="contained" onClick={()=>{
-                      setPopup(prev=>!prev)
-                    }}>
+                    <Button
+                      className="mgl primary-btn"
+                      variant="contained"
+                      onClick={() => {
+                        setPopup((prev) => !prev);
+                      }}
+                    >
                       Add user
                     </Button>
                   </Box>
@@ -315,7 +324,10 @@ const User = () => {
                       </Box>
                     </Grid>
                     <Grid item xs={4}>
-                      <FormControlLabel control={<Checkbox defaultChecked />} label="Is Moderator" />
+                      <FormControlLabel
+                        control={<Checkbox defaultChecked />}
+                        label="Is Moderator"
+                      />
                     </Grid>
                   </Grid>
                 </SearchOptions>
@@ -361,24 +373,38 @@ const User = () => {
             </Grid>
           </Grid>
         </Container>
-        <>
-          <Dialog open={popup} onClose={()=>{
-            setPopup(prev => !prev)
-          }} fullWidth>
-          <DialogTitle>Add User</DialogTitle>
-          <DialogContent>
-            <form
-              onSubmit={handleSubmit((data) => {
-                  console.log(data)
-              })}
-            >
-              <Grid>
-                
-              </Grid>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </>
+          <DialogStyled
+            open={popup}
+            onClose={() => {
+              setPopup((prev) => !prev);
+            }}
+            fullWidth
+          >
+            <ModalHeader>
+              <DialogTitle>Add User</DialogTitle>
+              <Button>
+                <CancelIcon />
+              </Button>
+            </ModalHeader>
+              <ModalButtonForm>
+                <Button>Internal Details</Button>
+                <Button>Personal Details</Button>
+                <Button>Contact Details</Button>
+                <Button>Application Preferences</Button>
+                <Button>Professional Details</Button>
+                <Button>Time Slots</Button>
+                <Button className="mgl primary-btn" variant="contained">Additional Infomation</Button>
+              </ModalButtonForm>
+            <DialogContent>
+              <form
+                onSubmit={handleSubmit((data) => {
+                  console.log(data);
+                })}
+              >
+                <Grid></Grid>
+              </form>
+            </DialogContent>
+          </DialogStyled>
       </Wrapper>
     </>
   );
