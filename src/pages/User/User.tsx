@@ -1,13 +1,10 @@
 import {
   Avatar,
   Container,
-  DialogStyled,
   Header,
   HeaderContainer,
   InfoUser,
   Logo,
-  ModalButtonForm,
-  ModalHeader,
   SearchOptions,
   UserFunction,
   UserRef,
@@ -30,17 +27,13 @@ import {
   Table,
   Checkbox,
   FormControlLabel,
-  DialogTitle,
-  DialogContent
 } from "@mui/material";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import CancelIcon from "@mui/icons-material/Cancel";
-
+import Modal from "./components/Modal";
 const Badge = styled(BaseBadge)(
   () => `
   box-sizing: border-box;
@@ -121,15 +114,8 @@ const User = () => {
     "User Status",
   ];
   const [isSearched, setIsSearched] = useState(true);
-  const [popup, setPopup] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
-  const { handleSubmit } = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      address: "",
-    },
-  });
+  const [popup, setPopup] = useState(false);
   return (
     <>
       <Wrapper>
@@ -214,7 +200,7 @@ const User = () => {
                       className="mgl primary-btn"
                       variant="contained"
                       onClick={() => {
-                        setPopup((prev) => !prev);
+                        setPopup(true);
                       }}
                     >
                       Add user
@@ -373,38 +359,7 @@ const User = () => {
             </Grid>
           </Grid>
         </Container>
-          <DialogStyled
-            open={popup}
-            onClose={() => {
-              setPopup((prev) => !prev);
-            }}
-            fullWidth
-          >
-            <ModalHeader>
-              <DialogTitle>Add User</DialogTitle>
-              <Button>
-                <CancelIcon />
-              </Button>
-            </ModalHeader>
-              <ModalButtonForm>
-                <Button>Internal Details</Button>
-                <Button>Personal Details</Button>
-                <Button>Contact Details</Button>
-                <Button>Application Preferences</Button>
-                <Button>Professional Details</Button>
-                <Button>Time Slots</Button>
-                <Button className="mgl primary-btn" variant="contained">Additional Infomation</Button>
-              </ModalButtonForm>
-            <DialogContent>
-              <form
-                onSubmit={handleSubmit((data) => {
-                  console.log(data);
-                })}
-              >
-                <Grid></Grid>
-              </form>
-            </DialogContent>
-          </DialogStyled>
+        <Modal popup={popup}></Modal>
       </Wrapper>
     </>
   );

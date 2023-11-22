@@ -106,7 +106,6 @@ export const DialogStyled = muiStyled(Dialog)(()=>`
         max-width: 815px;
         width: 100%;
         margin: 0 auto;
-        max-height: none;
     }
     & .MuiPaper-root{
             padding: 24px;
