@@ -114,8 +114,8 @@ const User = () => {
     "User Status",
   ];
   const [isSearched, setIsSearched] = useState(true);
-  const [selectedButton, setSelectedButton] = useState(null);
-  const [popup, setPopup] = useState(false);
+  // const [selectedButton, setSelectedButton] = useState(null);
+  const [popup, setPopup] = useState(true);
   return (
     <>
       <Wrapper>

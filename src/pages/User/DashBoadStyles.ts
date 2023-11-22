@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {ButtonGroup, Dialog, styled as muiStyled} from "@mui/material";
+import { ButtonGroup, Dialog, styled as muiStyled } from "@mui/material";
 
 export const Wrapper = styled.div`
     .pivot {
@@ -100,7 +100,7 @@ export const SearchOptions = styled.div`
     display: block;
 `
 
-export const DialogStyled = muiStyled(Dialog)(()=>`
+export const DialogStyled = muiStyled(Dialog)(() => `
     & .MuiDialog-container{
         overflow-y: initial;
         max-width: 815px;
@@ -132,7 +132,7 @@ export const ModalHeader = styled.div`
     
 `
 
-export const ModalButtonForm = muiStyled(ButtonGroup)(()=>`
+export const ModalButtonForm = muiStyled(ButtonGroup)(() => `
     margin: 0 auto;
     background-color: rgb(242, 243, 243);
     width: 100%;
@@ -155,3 +155,10 @@ export const ModalButtonForm = muiStyled(ButtonGroup)(()=>`
         width: fit-content
     }
 `)
+
+export const ButtonContainer = styled.div`
+    .MuiButton-root + .MuiButton-root{
+        margin-left: 16px
+    }
+    margin: 0 24px 0 24px;
+`
