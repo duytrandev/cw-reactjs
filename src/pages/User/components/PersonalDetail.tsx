@@ -1,6 +1,6 @@
-import { Box, Button, DialogContent, Grid, TextField } from "@mui/material"
-import Select from 'react-select'
-import InputForm from "./InputForm"
+import { Box, Button, DialogContent, Grid, TextField } from "@mui/material";
+import Select from "react-select";
+import InputForm from "./HOC/InputForm";
 
 const PersonalDetail = () => {
   return (
@@ -11,43 +11,55 @@ const PersonalDetail = () => {
             <Box>
               <InputForm required>
                 <span>{`Frist Name:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
           <Grid item xs={4}>
-          <Box>
+            <Box>
               <InputForm>
                 <span>{`Middle Name:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
           <Grid item xs={4}>
-          <Box>
+            <Box>
               <InputForm required>
                 <span>{`Last Name:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
           <Grid item xs={4}>
-          <Box>
+            <Box>
               <InputForm>
                 <span>{`Nickname:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
@@ -63,7 +75,6 @@ const PersonalDetail = () => {
                   options={[
                     { value: "12ss", label: "Dr." },
                     { value: "123", label: "Coach" },
-                    
                   ]}
                   styles={{
                     control: (baseStyles) => ({
@@ -105,16 +116,19 @@ const PersonalDetail = () => {
             <Box>
               <InputForm>
                 <span>{`Pronoun:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
           <Grid item xs={4}>
             <Box>
-            <InputForm required>
+              <InputForm required>
                 <span>{`Preferred Language:`}</span>
                 <Select
                   className="basic-multi-select"
@@ -139,7 +153,7 @@ const PersonalDetail = () => {
           </Grid>
           <Grid item xs={4}>
             <Box>
-            <InputForm>
+              <InputForm>
                 <span>{`Other Spoken Languages:`}</span>
                 <Select
                   className="basic-multi-select"
@@ -164,15 +178,16 @@ const PersonalDetail = () => {
           </Grid>
           <Grid item xs={4}>
             <Box>
-            <InputForm>
+              <InputForm>
                 <span>{`Profile Image:`}</span>
-                <Button fullWidth variant="outlined" style={{
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  style={{
                     marginTop: "3px",
                   }}
-                  >
-                    <span>
-                      UPLOAD
-                    </span>
+                >
+                  <span>UPLOAD</span>
                 </Button>
               </InputForm>
             </Box>
@@ -180,7 +195,7 @@ const PersonalDetail = () => {
         </Grid>
       </form>
     </DialogContent>
-  )
-}
+  );
+};
 
-export default PersonalDetail
+export default PersonalDetail;

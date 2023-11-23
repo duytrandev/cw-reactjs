@@ -1,164 +1,291 @@
-import styled from "styled-components";
 import { ButtonGroup, Dialog, styled as muiStyled } from "@mui/material";
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    .pivot {
-        &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 1px;
-            height: 10px;
-            color: #888;
-        }
+  .pivot {
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 1px;
+      height: 10px;
+      color: #888;
     }
-    th {
-        font-size: 1rem;
-        font-weight: bold;
-    }
-    td {
-        font-size: 0.8;
-    }
-    .primary-btn {
-        background-color: var(--main-color)
-    }
-    .secondary-btn{
-        color: var(--main-color);
-        border-color: var(--main-color);
-        font-weight: 500;
-    }
-    label{
-        color: rgba(6, 24, 78);
-    }
-`
+  }
+  th {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  td {
+    font-size: 0.8;
+  }
+  .primary-btn {
+    background-color: var(--main-color);
+  }
+  .secondary-btn {
+    color: var(--main-color);
+    border-color: var(--main-color);
+    font-weight: 500;
+  }
+  label {
+    color: rgba(6, 24, 78);
+  }
+`;
 
 export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .header-left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    .header-left{
-        display: flex;
-        align-items: center;
-    }
-    .MuiInputBase-root{
-        background-color: #fff;
-    }
-    height: 100px;
-`
+  }
+  .MuiInputBase-root {
+    background-color: #fff;
+  }
+  height: 100px;
+`;
 
 export const Logo = styled.img`
-    width: 250px;
-    height: 100px;
-`
+  width: 250px;
+  height: 100px;
+`;
 
 export const InfoUser = styled.div`
-    display: flex;
-`
+  display: flex;
+`;
 
 export const Avatar = styled.img`
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-`
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+`;
 
 export const UserRef = styled.div`
-    display: flex;
-    height: 100%;
-`
+  display: flex;
+  height: 100%;
+`;
 
 export const Container = styled.div`
-    background-color: #fff;
-    width: 90%;
-    min-width: 610px;
-    margin: 0 auto;
-    border-radius: 20px;
-    padding: 0 20px;
-`
+  background-color: #fff;
+  width: 90%;
+  min-width: 610px;
+  margin: 0 auto;
+  border-radius: 20px;
+  padding: 0 20px;
+`;
 
 export const HeaderContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 export const UserFunction = styled.div`
-    display: flex;
-    align-items: center;
-    & .mgl{
-        margin-left: 10px;
-        white-space: nowrap
-    }
-    & .btn-search{
-        padding: 12px;
-        font-size: 45px;
-    }
-`
+  display: flex;
+  align-items: center;
+  & .mgl {
+    margin-left: 10px;
+    white-space: nowrap;
+  }
+  & .btn-search {
+    padding: 12px;
+    font-size: 45px;
+  }
+`;
 
 export const SearchOptions = styled.div`
-    display: block;
-`
+  display: block;
+`;
 
-export const DialogStyled = muiStyled(Dialog)(() => `
+export const DialogStyled = muiStyled(Dialog)(
+  () => `
+    
     & .MuiDialog-container{
-        overflow-y: initial;
         max-width: 815px;
         width: 100%;
         margin: 0 auto;
     }
     & .MuiPaper-root{
+            overflow: scroll;
             padding: 24px;
             margin: 0;
             width: 100%;
             max-width: none;
         }
-`)
+    & .MuiBox-root{
+    }
+`
+);
 
 export const ModalHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    h2{
-        padding-left: 0;
-        font-weight: 700;
-        color: rgb(6, 24, 78)
-    }
-    .MuiButtonBase-root, .MuiSvgIcon-root{
-        height: 28px;
-        min-width: 28px;
-        padding: 0
-    }
-    
-`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2 {
+    padding-left: 0;
+    font-weight: 700;
+    color: rgb(6, 24, 78);
+  }
+  .MuiButtonBase-root,
+  .MuiSvgIcon-root {
+    height: 28px;
+    min-width: 28px;
+    padding: 0;
+  }
+  
+`;
 
-export const ModalButtonForm = muiStyled(ButtonGroup)(() => `
+export const ModalButtonForm = muiStyled(ButtonGroup)(
+  () => `
     margin: 0 auto;
     background-color: rgb(242, 243, 243);
     width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
     border-radius: 2px;
+
     & .MuiButtonBase-root{
         display: flex;
         text-transform: none;
-        white-space: nowrap;
         border: none;
         padding: 6px 8px;
         margin: 0;
         box-shadow: none;
-        color: rgb(99, 99, 99);
         border-radius: 0px;
         flex: 1 1 0%;
-        width: fit-content
+        min-width: 125px;
+        padding: 0;
     }
-`)
+    & .MuiTabs-flexContainer{
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .Mui-selected {
+        color: white;
+        background-color: var(--main-color);
+    }
+`
+);
 
 export const ButtonContainer = styled.div`
-    .MuiButton-root + .MuiButton-root{
-        margin-left: 16px
+  .MuiButton-root + .MuiButton-root {
+    margin-left: 16px;
+  }
+  margin: 0 24px 0 24px;
+`;
+
+export const LabelInput = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const TimeSlotStyled = styled.div`
+  overflow: scroll;
+  .date-picker {
+    text-align: center;
+  }
+  .calendar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .label-calendar {
+      padding-right: 3px;
+      color: var(--main-color);
     }
-    margin: 0 24px 0 24px;
-`
+  }
+`;
+
+export const NavTimeSlot = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+  .week-btn {
+    width: 2.8rem;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    border-radius: 50%;
+    border-color: #999;
+    color: #999;
+    &:hover {
+      cursor: pointer;
+      border-color: #777;
+      color: #777;
+    }
+  }
+  .current-date {
+    font-size: 1.3rem;
+  }
+`;
+
+export const TimeSlotTable = styled.div`
+  border: 1px solid #444;
+  width: 765px;
+  height: 760px;
+  margin-top: 15px;
+  overflow-y: scroll;
+`;
+
+export const DateContainer = styled.div`
+  display: flex;
+
+  .slottime-col {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    overflow: scroll;
+  }
+
+  .header-timeslot {
+    text-align: center;
+    border-bottom: 1px solid #444;
+    border-left: 1px solid #444;
+    padding: 10px 0;
+    div + div {
+      margin-top: 10px;
+    }
+    .date {
+      font-size: 1.8rem;
+      font-weight: 300;
+    }
+  }
+
+  .time-available {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    overflow: scroll;
+    padding: 15px;
+  }
+
+  .button-time {
+    background-color: #999999;
+    padding: 10px 0;
+    color: #fff;
+    border-radius: 20px;
+    border-color: transparent;
+    margin-bottom: 15px;
+    cursor: pointer;
+    .active{
+        background-color: var(--main-color);
+    }
+  }
+`;
+
+
+
+export const TimeSlotCol = styled.div``;
+
+export const TimeSlotBody = styled.div``;

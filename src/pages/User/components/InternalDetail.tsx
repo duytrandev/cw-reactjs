@@ -1,6 +1,6 @@
 import { Box, DialogContent, Grid, TextField } from "@mui/material";
-import InputForm from "./InputForm";
-import Select from 'react-select'
+import Select from "react-select";
+import InputForm from "./HOC/InputForm";
 
 const InternalDetail = () => {
   return (
@@ -39,10 +39,13 @@ const InternalDetail = () => {
             <Box>
               <InputForm>
                 <span>{`Username:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
@@ -104,7 +107,7 @@ const InternalDetail = () => {
           </Grid>
           <Grid item xs={4}>
             <Box>
-              <InputForm >
+              <InputForm>
                 <span>{`Sub-Facility:`}</span>
                 <Select
                   isMulti
@@ -162,10 +165,13 @@ const InternalDetail = () => {
             <Box>
               <InputForm>
                 <span>{`NPI:`}</span>
-                <TextField fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
@@ -173,17 +179,21 @@ const InternalDetail = () => {
             <Box>
               <InputForm>
                 <span>{`External Id:`}</span>
-                <TextField type="number" fullWidth style={{
-                  minHeight: "53.7px",
-                  marginTop: "3px",
-                }}></TextField>
+                <TextField
+                  type="number"
+                  fullWidth
+                  style={{
+                    minHeight: "53.7px",
+                    marginTop: "3px",
+                  }}
+                ></TextField>
               </InputForm>
             </Box>
           </Grid>
         </Grid>
       </form>
     </DialogContent>
-  )
-}
+  );
+};
 
-export default InternalDetail
+export default InternalDetail;
