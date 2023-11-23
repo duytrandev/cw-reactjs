@@ -173,7 +173,7 @@ const InternalDetail = () => {
             <Box>
               <InputForm>
                 <span>{`External Id:`}</span>
-                <TextField fullWidth style={{
+                <TextField type="number" fullWidth style={{
                   minHeight: "53.7px",
                   marginTop: "3px",
                 }}></TextField>

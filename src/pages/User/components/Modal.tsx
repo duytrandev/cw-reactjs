@@ -6,6 +6,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { SyntheticEvent, useState } from "react";
 import InternalDetail from "./InternalDetail";
 import InputField from "../../../components/InputField";
+import PersonalDetail from "./PersonalDetail";
 
 interface Props {
   popup: boolean;
@@ -93,6 +94,9 @@ const Modal = ({ popup }: Props) => {
       </ModalButtonForm>
       {
         value === 'Internal Details' && <InternalDetail></InternalDetail>
+      }
+      {
+        value === 'Personal Details' && <PersonalDetail></PersonalDetail>
       }
       {
         value === 'Additional Infomation' && <InputField></InputField>
