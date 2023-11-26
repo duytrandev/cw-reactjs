@@ -2,14 +2,12 @@ export function getFirstAndLastDayOfWeek(day: Date): { monday: Date; sunday: Dat
   const date = new Date(day);
 
   const currentDayOfWeek = date.getDay();
-
   const daysUntilMonday = (currentDayOfWeek + 6) % 7;
-  const daysUntilSunday = 7 - currentDayOfWeek;
+  const daysUntilSunday = 7 - currentDayOfWeek === 7 ? 0 : 7 - currentDayOfWeek;
   const mondayDate = new Date(date);
   mondayDate.setDate(date.getDate() - daysUntilMonday);
   const sundayDate = new Date(date);
   sundayDate.setDate(date.getDate() + daysUntilSunday);
-
   return { monday: mondayDate, sunday: sundayDate };
 }
 

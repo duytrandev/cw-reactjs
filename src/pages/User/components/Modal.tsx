@@ -39,21 +39,19 @@ const Modal = ({ popup }: Props) => {
       <ModalButtonForm>
         <Box>
           <Tabs value={value} onChange={handleChange} centered className="acb">
-            <Tab sx={{
-              
-            }} value="Internal Details" label="Internal Details"/>
-            <Tab value="Personal Details" label="Personal Details"/>
-            <Tab value="Contact Details" label="Contact Details"/>
+            <Tab value="Internal Details" label="Internal Details" />
+            <Tab value="Personal Details" label="Personal Details" />
+            <Tab value="Contact Details" label="Contact Details" />
             <Tab
               value="Application Preferences"
               label="Application Preferences"
             />
             <Tab
               value="Professional Details"
-              label="Professional Details"        
+              label="Professional Details"
             />
-            <Tab value="Time Slots" label="Time Slots"/>
-            <Tab sx={{width: '100%', minWidth: "100% !important"}} value="Additional Infomation" label="Additional Infomation" />
+            <Tab value="Time Slots" label="Time Slots" />
+            <Tab sx={{ width: '100%', minWidth: "100% !important" }} value="Additional Infomation" label="Additional Infomation" />
           </Tabs>
         </Box>
       </ModalButtonForm>

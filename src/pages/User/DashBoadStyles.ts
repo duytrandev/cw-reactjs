@@ -109,7 +109,7 @@ export const DialogStyled = muiStyled(Dialog)(
         margin: 0 auto;
     }
     & .MuiPaper-root{
-            overflow: scroll;
+            overflow-y: scroll;
             padding: 24px;
             margin: 0;
             width: 100%;
@@ -185,7 +185,7 @@ export const LabelInput = styled.div`
 `;
 
 export const TimeSlotStyled = styled.div`
-  overflow: scroll;
+  overflow-y: scroll;
   .date-picker {
     text-align: center;
   }
@@ -243,7 +243,7 @@ export const DateContainer = styled.div`
     flex-wrap: nowrap;
     flex-direction: column;
     justify-content: center;
-    overflow: scroll;
+    overflow-y: hidden;
   }
 
   .header-timeslot {
@@ -266,7 +266,7 @@ export const DateContainer = styled.div`
     flex-wrap: nowrap;
     flex-direction: column;
     justify-content: center;
-    overflow: scroll;
+    overflow-y: hidden;
     padding: 15px;
   }
 
@@ -281,6 +281,9 @@ export const DateContainer = styled.div`
     .active{
         background-color: var(--main-color);
     }
+  }
+  & .selected {
+    background-color: var(--main-color)
   }
 `;
 

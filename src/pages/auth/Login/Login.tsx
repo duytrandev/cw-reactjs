@@ -11,15 +11,19 @@ import {
   MenuStyled,
   RememberStyled,
 } from './LoginStyled';
-import { useEffect } from 'react';
-import { userAPI } from '../../../app/apis/users.api';
-
+import { useAppDispatch } from '../../../reduxs/store';
+import { authActions } from '../authSlice';
 
 
 const Login = () => {
-  useEffect(()=>{
-    userAPI.getAll().then(rs=> console.log(rs))
-  }, [])
+  const dispatch = useAppDispatch()
+
+  const handleClickLoggin = () => {
+    dispatch(authActions.login({
+      username: "",
+      password: ""
+    }))
+  }
   return (
     <Wrapper>
       <div>
@@ -38,7 +42,7 @@ const Login = () => {
               variant="filled"
               margin="normal"
             />
-            <InputField 
+            <InputField
               id="fill-basic"
               label="Password"
               variant="filled"
@@ -47,12 +51,12 @@ const Login = () => {
             />
             <MenuStyled>
               <RememberStyled>
-                <input type="checkbox"/>
+                <input type="checkbox" />
                 <span>Remember Me</span>
               </RememberStyled>
               <a href="#"><span>Forgot Password?</span></a>
             </MenuStyled>
-            <Button fullWidth variant="contained" sx={{padding: '17px 0 13px 0', fontSize: '1.8rem', marginTop: '35px'} }>Login</Button>
+            <Button onClick={handleClickLoggin} fullWidth variant="contained" sx={{ padding: '17px 0 13px 0', fontSize: '1.8rem', marginTop: '35px' }}>Login</Button>
           </BodyStyled>
         </FormSectionStyled>
       </div>
