@@ -1,6 +1,7 @@
-import { Button } from '@mui/material';
-import logo from '../../../assets/logo.svg'
-import InputField from '../../../components/InputField';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Button } from "@mui/material";
+import logo from "../../../assets/logo.svg";
+import InputField from "../../../components/InputField";
 import {
   Wrapper,
   LogoStyled,
@@ -10,23 +11,41 @@ import {
   BodyStyled,
   MenuStyled,
   RememberStyled,
-} from './LoginStyled';
-import { useAppDispatch } from '../../../reduxs/store';
-import { authActions } from '../authSlice';
-
+} from "./LoginStyled";
+import { useAppDispatch } from "../../../reduxs/hooks";
+import { LogginPayload, authActions, selectCurrentUser, selectErrorsObject, selectIsLogging } from "../authSlice";
+import { useAppSelector } from "../../../reduxs/hooks";
+import { Controller, useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 const Login = () => {
-  const dispatch = useAppDispatch()
-
-  const handleClickLoggin = () => {
-    dispatch(authActions.login({
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
       username: "",
-      password: ""
-    }))
-  }
+      password: "",
+    },
+  });
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
+  const errors = useAppSelector(selectErrorsObject);
+  const handleClickLoggin = (data) => {
+    console.log(data)
+    const {username, password} = data
+    dispatch(
+      authActions.login({
+        username,
+        password,
+      })
+    );
+  };
+  useEffect(() => {
+    if (errors) {
+      alert(JSON.stringify(errors));
+    }
+  }, [errors]);
   return (
     <Wrapper>
-      <div>
+      <form onSubmit={handleSubmit(handleClickLoggin)}>
         <LogoWraper>
           <LogoStyled src={logo} alt="" />
         </LogoWraper>
@@ -36,32 +55,55 @@ const Login = () => {
             <h2>Please login to your account</h2>
           </HeaderStyled>
           <BodyStyled>
-            <InputField
-              id="filled-basic"
-              label="Username"
-              variant="filled"
-              margin="normal"
+            <Controller
+              name="username"
+              control={control}
+              render={({...fields}) => (
+                <InputField
+                  {...fields}
+                  id="filled-basic"
+                  label="Username"
+                  variant="filled"
+                  margin="normal"
+                />
+              )}
             />
-            <InputField
-              id="fill-basic"
-              label="Password"
-              variant="filled"
-              margin="normal"
-              type='password'
+            <Controller
+              name="password"
+              control={control}
+              render={({...fields}) => (
+                <InputField
+                  {...fields}
+                  id="fill-basic"
+                  label="Password"
+                  variant="filled"
+                  margin="normal"
+                  type="password"
+                />
+              )}
             />
             <MenuStyled>
               <RememberStyled>
                 <input type="checkbox" />
                 <span>Remember Me</span>
               </RememberStyled>
-              <a href="#"><span>Forgot Password?</span></a>
+              <a href="#">
+                <span>Forgot Password?</span>
+              </a>
             </MenuStyled>
-            <Button onClick={handleClickLoggin} fullWidth variant="contained" sx={{ padding: '17px 0 13px 0', fontSize: '1.8rem', marginTop: '35px' }}>Login</Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ padding: "17px 0 13px 0", fontSize: "1.8rem", marginTop: "35px" }}
+            >
+              Login
+            </Button>
           </BodyStyled>
         </FormSectionStyled>
-      </div>
+      </form>
     </Wrapper>
   );
-}
+};
 
-export default Login
+export default Login;

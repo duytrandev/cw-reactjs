@@ -5,3 +5,8 @@ export interface IUser {
     createAt: Date,
     updateAt: Date,
 }
+
+export interface IAuth {
+    accessToken: string,
+    refreshToken: string
+}
