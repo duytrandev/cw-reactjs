@@ -1,4 +1,4 @@
-import { authSaga } from "../pages/auth/authSage";
+import { authSaga } from "../pages/auth/authSaga";
 import { all } from "redux-saga/effects";
 
 // eslint-disable-next-line require-yield

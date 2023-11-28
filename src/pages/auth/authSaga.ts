@@ -3,14 +3,16 @@ import { call, fork, put, take } from "redux-saga/effects";
 import { LogginPayload, authActions } from "./authSlice";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { authApi } from "../../app/apis/auth.api";
-import { IAuth, IUser } from "models";
+import { IAuth, IUser } from "../../models";
 
 function* handleLogin(payload: LogginPayload) {
   try {
     console.log(`payload ${JSON.stringify(payload)}`)
-    const user: IAuth & IUser = yield call(authApi.login, payload)
-    // console.log(`user ${JSON.stringify(user)}`)
+    const {accessToken, expiresIn, refreshToken, ...user}: IAuth & IUser = yield call(authApi.login, payload)
     yield put(authActions.loginSuccess(user))
+    localStorage.setItem('access_token', accessToken)
+    localStorage.setItem('auth', JSON.stringify({accessToken, expiresIn, refreshToken}))
+    console.log({user, accessToken, refreshToken})
   } catch (error: any) {
     console.log(1)
     yield put(authActions.loginFailure(error?.response?.data?.errors))
@@ -18,15 +20,14 @@ function* handleLogin(payload: LogginPayload) {
   }
 }
 
-function* handleLogout() {
-
-}
 
 function* watchLoginFlow() {
-  const action: PayloadAction<LogginPayload> = yield take(authActions.login.type)
-  yield fork(handleLogin, action.payload)
-  yield take(authActions.logout.type)
-  yield fork(handleLogout)
+  while(true){
+    const action: PayloadAction<LogginPayload> = yield take(authActions.login)
+    yield call(handleLogin, action.payload)
+  }
+  // yield take(authActions.logout.type)
+  // yield fork(handleLogout)
 }
 
 export function* authSaga() {

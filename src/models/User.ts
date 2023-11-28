@@ -8,5 +8,6 @@ export interface IUser {
 
 export interface IAuth {
     accessToken: string,
-    refreshToken: string
+    refreshToken: string,
+    expiresIn: string
 }

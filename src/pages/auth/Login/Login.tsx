@@ -13,13 +13,21 @@ import {
   RememberStyled,
 } from "./LoginStyled";
 import { useAppDispatch } from "../../../reduxs/hooks";
-import { LogginPayload, authActions, selectCurrentUser, selectErrorsObject, selectIsLogging } from "../authSlice";
+import {
+  LogginPayload,
+  authActions,
+  selectCurrentUser,
+  selectErrorsObject,
+} from "../authSlice";
 import { useAppSelector } from "../../../reduxs/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { control, handleSubmit } = useForm({
+  const navigate = useNavigate()
+  console.log('re-render')
+  const { control, handleSubmit } = useForm<LogginPayload>({
     defaultValues: {
       username: "",
       password: "",
@@ -28,9 +36,8 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const errors = useAppSelector(selectErrorsObject);
-  const handleClickLoggin = (data) => {
-    console.log(data)
-    const {username, password} = data
+  const handleClickLoggin = (data: LogginPayload) => {
+    const { username, password } = data;
     dispatch(
       authActions.login({
         username,
@@ -38,14 +45,21 @@ const Login = () => {
       })
     );
   };
+
+  useEffect(() => {
+    if(user) {
+      navigate('/users')
+    }
+  }, [user, navigate]);
+
   useEffect(() => {
     if (errors) {
       alert(JSON.stringify(errors));
     }
-  }, [errors]);
+  }, [errors, navigate]);
   return (
     <Wrapper>
-      <form onSubmit={handleSubmit(handleClickLoggin)}>
+      <form id="login-form" onSubmit={handleSubmit(handleClickLoggin)}>
         <LogoWraper>
           <LogoStyled src={logo} alt="" />
         </LogoWraper>
@@ -58,9 +72,11 @@ const Login = () => {
             <Controller
               name="username"
               control={control}
-              render={({...fields}) => (
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputField
-                  {...fields}
+                  onChange={onChange}
+                  value={value}
+                  error={!!error}
                   id="filled-basic"
                   label="Username"
                   variant="filled"
@@ -71,9 +87,11 @@ const Login = () => {
             <Controller
               name="password"
               control={control}
-              render={({...fields}) => (
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <InputField
-                  {...fields}
+                  onChange={onChange}
+                  value={value}
+                  error={!!error}
                   id="fill-basic"
                   label="Password"
                   variant="filled"
