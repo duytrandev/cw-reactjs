@@ -1,13 +1,17 @@
+import { useEffect } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 const ProtectedRouter = () => {
-  const isLoggedIn = localStorage.getItem('access_token')
-  const navigate = useNavigate()
-  if(!isLoggedIn){  
-    navigate('/signin')
-  }
+  // const isLoggedIn = localStorage.getItem('access_token')
+  // const navigate = useNavigate()
+
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate('/signin')
+  //   }
+  // }, [isLoggedIn, navigate])
   return (
-    <Outlet/>
+    <Outlet />
   )
 }
 

@@ -159,6 +159,7 @@ export const ModalButtonForm = muiStyled(ButtonGroup)(
         flex: 1 1 0%;
         min-width: 125px;
         padding: 0;
+        color: black;
     }
     & .MuiTabs-flexContainer{
         flex-wrap: wrap;

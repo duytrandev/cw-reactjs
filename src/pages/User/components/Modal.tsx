@@ -13,21 +13,21 @@ import TimeSlot from "./TimeSlot";
 interface Props {
   popup: boolean;
   required?: boolean;
+  handleClosePopup?: () => void
 }
 
-const Modal = ({ popup }: Props) => {
-  const [popup1, setPopup] = useState(popup);
-  console.log(popup1, popup);
-  const [value, setValue] = useState("Time Slots");
-
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    console.log(event);
-    setValue(newValue);
-    console.log(newValue);
-  };
-  function handleClosePopup() {
-    setPopup((prev) => !prev);
+const Modal = ({ popup, handleClosePopup }: Props) => {
+  const [value, setValue] = useState("Internal Details");
+  const [disabledBtn, setDisableBtn] = useState(true)
+  const errors = {
+    // a: 1
   }
+  const handleChange = (event: SyntheticEvent, newValue: string) => {
+    if (Object.keys(errors).length < 1) {
+      setDisableBtn(prev => !prev)
+      setValue(newValue);
+    }
+  };
   return (
     <DialogStyled open={popup} fullWidth>
       <ModalHeader>
@@ -38,7 +38,11 @@ const Modal = ({ popup }: Props) => {
       </ModalHeader>
       <ModalButtonForm>
         <Box>
-          <Tabs value={value} onChange={handleChange} centered className="acb">
+          <Tabs TabIndicatorProps={{
+            sx: {
+              display: 'none'
+            }
+          }} value={value} onChange={handleChange} centered className="header-form-add">
             <Tab value="Internal Details" label="Internal Details" />
             <Tab value="Personal Details" label="Personal Details" />
             <Tab value="Contact Details" label="Contact Details" />
@@ -62,11 +66,10 @@ const Modal = ({ popup }: Props) => {
       {value === "Professional Details" && <ProfessionalDetail></ProfessionalDetail>}
       {value === "Time Slots" && <TimeSlot></TimeSlot>}
       {value === "Additional Infomation" && <AdditionalInformation></AdditionalInformation>}
-
-      <ButtonContainer>
+      <ButtonContainer >
         {value !== "Internal Details" && <Button variant="outlined">Back</Button>}
-        <Button variant="contained">Next</Button>
-        <Button variant="contained" disabled>
+        <Button disabled={!disabledBtn} variant="contained">Next</Button>
+        <Button variant="contained" disabled={disabledBtn}>
           Finish
         </Button>
         <Button variant="contained" disabled>

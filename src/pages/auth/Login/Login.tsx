@@ -26,7 +26,6 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate()
-  console.log('re-render')
   const { control, handleSubmit } = useForm<LogginPayload>({
     defaultValues: {
       username: "",
@@ -47,7 +46,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       navigate('/users')
     }
   }, [user, navigate]);
@@ -57,6 +56,7 @@ const Login = () => {
       alert(JSON.stringify(errors));
     }
   }, [errors, navigate]);
+
   return (
     <Wrapper>
       <form id="login-form" onSubmit={handleSubmit(handleClickLoggin)}>

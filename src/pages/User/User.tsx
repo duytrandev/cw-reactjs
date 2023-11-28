@@ -115,7 +115,10 @@ const User = () => {
   ];
   const [isSearched, setIsSearched] = useState(true);
   // const [selectedButton, setSelectedButton] = useState(null);
-  const [popup, setPopup] = useState(true);
+  const [popup, setPopup] = useState(false);
+  function handleClosePopup() {
+    setPopup(false)
+  }
   return (
     <>
       <Wrapper>
@@ -257,7 +260,6 @@ const User = () => {
                       <Box>
                         <label htmlFor="">{`Status:`}</label>
                         <br></br>
-
                         <Select
                           isMulti
                           className="basic-multi-select"
@@ -359,7 +361,7 @@ const User = () => {
             </Grid>
           </Grid>
         </Container>
-        <Modal popup={popup}></Modal>
+        <Modal popup={popup} handleClosePopup={handleClosePopup}></Modal>
       </Wrapper>
     </>
   );
