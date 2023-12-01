@@ -4,13 +4,20 @@ export const axiosClient = axios.create({
     // baseURL: 'https://6544c1325a0b4b04436ce94a.mockapi.io/',
     baseURL: 'http://localhost:3000/api',
     headers:{
-        'Content-Type':'application/json'
+        'Content-Type':'application/json',
     }
 })
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(function (config: InternalAxiosRequestConfig) {
     // Do something before request is sent
+    const isAuthPath = config.url?.includes('/auth')
+    if(!isAuthPath){
+      const token = localStorage.getItem('access_token')
+      if(token){
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    }
     return config;
   }, function (error) {
     // Do something with request error

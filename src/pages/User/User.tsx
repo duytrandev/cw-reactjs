@@ -1,105 +1,106 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  SvgIcon,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { userAPI } from "../../app/apis/users.api";
+import logo from "../../assets/logo.svg";
+import { IFacility, IUser, ListReponse } from "../../models";
+import { useAppDispatch, useAppSelector } from "../../reduxs/hooks";
 import {
   Avatar,
+  Badge,
   Container,
   Header,
   HeaderContainer,
   InfoUser,
   Logo,
+  PaginationStyle,
   SearchOptions,
   UserFunction,
   UserRef,
   Wrapper,
 } from "./DashBoadStyles";
-import logo from "../../assets/logo.svg";
-import {
-  Badge as BaseBadge,
-  badgeClasses,
-  Box,
-  Button,
-  TextField,
-  styled,
-  Grid,
-  TableHead,
-  TableBody,
-  SvgIcon,
-  TableRow,
-  TableCell,
-  Table,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
-import Select from "react-select";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { useState } from "react";
 import Modal from "./components/Modal";
-const Badge = styled(BaseBadge)(
-  () => `
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-size: 10px;
-  font-variant: tabular-nums;
-  list-style: none;
-  font-family: IBM Plex Sans, sans-serif;
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-  
-  & .${badgeClasses.badge} {
-    z-index: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 22px;
-    white-space: nowrap;
-    text-align: center;
-    border-radius: 12px;
-    background: #F44335;
-    transform: translate(60%, -70%);
-    transform-origin: 100% 0;
-  }
-  `
-);
+import Paginations from "./components/Pagination";
+import { searchOptionSelector } from "./userSlice";
 
 const User = () => {
-  const facilities = [
-    { id: "abcd", name: "aaaaa" },
-    { id: "abce", name: "sssss" },
-    { id: "abcf", name: "ddddd" },
-    { id: "abcdd", name: "ccccc" },
-  ];
-  const users = [
-    {
-      id: "abc",
-      username: "asd",
-      name: "asd",
-      DOB: "XCXC",
-      email: "dsa@@aqweqweqweqwewqe",
-      phone: 123123,
-      location: "asdasd",
-      role: "asdsad",
-      lastUpdated: "assadsd",
-    },
-    {
-      id: "dddd",
-      username: "2323",
-      name: "5454",
-      DOB: "fdfdf",
-      email: "4r44@@",
-      phone: 334444,
-      location: "44444",
-      role: "dsfsdfv22",
-      lastUpdated: "22222222",
-    },
-  ];
+  // users api
+  // console.log("rerender");
+  const selectSearchOptions = useAppSelector(searchOptionSelector);
+  // console.log(123, selectSearchOptions);
+  // const [searchOptions, setSearchOptions] = useState(selectSearchOptions);
+  const [users, setUsers] = useState<ListReponse<IUser>>({
+    pagination: { limit: 0, page: 0, total: 0 },
+    list: [],
+  });
+  useEffect(() => {
+    (async () => {
+      await new Promise<void>((resolve) => {
+        setTimeout(() => {
+          resolve();
+          userAPI.getAll(selectSearchOptions).then((rs) => {
+            setUsers(rs);
+          });
+        }, 1000);
+      });
+    })();
+  }, [selectSearchOptions]);
+
+  // facilities api
+  const [facilities, setFacilities] = useState<IFacility[]>([]);
+  useEffect(() => {
+    userAPI
+      .getFacilities({
+        search: {
+          status: true,
+        },
+        // all: true
+      })
+      .then((rs) => {
+        setFacilities(rs);
+      });
+  }, []);
+
+  const dispatch = useAppDispatch();
+  const [input, setInput] = useState({
+    Username: "",
+    Name: "",
+    Email: "",
+    Phone: "",
+  });
+  function handleInputSearchChange(col: string, value: string) {
+    const repOptions = { ...input };
+    repOptions[col as keyof typeof repOptions] = value;
+    setInput(repOptions);
+    const payload = Object.keys(repOptions).reduce((acc, cur) => {
+      acc[cur.toLocaleLowerCase()] = repOptions[cur as keyof typeof repOptions];
+      return acc;
+    }, {} as { [key: string]: any });
+    dispatch({ type: "DEBOUNCE_INPUTSEARCH", payload: { search: payload } });
+  }
+  function handleSelectSearchChange(key: string, value: string | string[]) {
+    const payload = {
+      [key]: value,
+    };
+    dispatch({ type: "DEBOUNCE_INPUTSEARCH", payload: { search: payload } });
+  }
   const columns = [
     "Username",
     "Name",
@@ -113,12 +114,12 @@ const User = () => {
     "STN Level",
     "User Status",
   ];
-  const [isSearched, setIsSearched] = useState(true);
-  // const [selectedButton, setSelectedButton] = useState(null);
+  const [isSearched, setIsSearched] = useState(false);
   const [popup, setPopup] = useState(false);
   function handleClosePopup() {
-    setPopup(false)
+    setPopup(false);
   }
+
   return (
     <>
       <Wrapper>
@@ -130,10 +131,15 @@ const User = () => {
                 className="basic-single"
                 classNamePrefix="select"
                 isSearchable
+                onChange={(event) => {
+                  if (event) {
+                    handleSelectSearchChange("facilities", [event.value]);
+                  }
+                }}
                 name="facilities"
                 options={facilities.map((facility) => {
                   return {
-                    value: facility.id,
+                    value: facility._id,
                     label: facility.name,
                   };
                 })}
@@ -173,22 +179,25 @@ const User = () => {
                   <h1>User</h1>
                 </Box>
                 <UserFunction>
-                  <div
-                    className="btn-search mgl"
-                  >
+                  <div className="btn-search mgl">
                     {isSearched === false ? (
-                      <SvgIcon onClick={() => {
-                        setIsSearched((prev) => !prev);
-                      }}>
+                      <SvgIcon
+                        onClick={() => {
+                          setIsSearched((prev) => !prev);
+                        }}
+                      >
                         <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                         </svg>
-
                       </SvgIcon>
                     ) : (
-                      <Button onClick={() => {
-                        setIsSearched((prev) => !prev);
-                      }} className="secondary-btn" variant="outlined">
+                      <Button
+                        onClick={() => {
+                          setIsSearched((prev) => !prev);
+                        }}
+                        className="secondary-btn"
+                        variant="outlined"
+                      >
                         Close Search
                       </Button>
                     )}
@@ -221,23 +230,35 @@ const User = () => {
               {isSearched && (
                 <SearchOptions>
                   <Grid container spacing={3}>
-                    {columns
-                      .filter((col) => ["Username", "Name", "Email", "Phone"].includes(col))
-                      .map((col, indx) => (
-                        <Grid key={indx} item xs={4}>
-                          <Box>
-                            <label htmlFor="">{`${col}:`}</label>
-                            <br></br>
-                            <TextField fullWidth></TextField>
-                          </Box>
-                        </Grid>
-                      ))}
+                    {Object.keys(input).map((col, indx) => (
+                      <Grid key={indx} item xs={4}>
+                        <Box>
+                          <label htmlFor="">{`${col}:`}</label>
+                          <br></br>
+                          <TextField
+                            value={input[col as keyof typeof input]}
+                            onChange={(event) => {
+                              handleInputSearchChange(col, event.target.value);
+                            }}
+                            fullWidth
+                          ></TextField>
+                        </Box>
+                      </Grid>
+                    ))}
                     <Grid item xs={4}>
                       <Box>
                         <label htmlFor="">{`Role:`}</label>
                         <br></br>
                         <Select
                           isMulti
+                          onChange={(events) => {
+                            handleSelectSearchChange(
+                              "roles",
+                              events.map((event) => {
+                                return event.label;
+                              })
+                            );
+                          }}
                           className="basic-multi-select"
                           classNamePrefix="select"
                           isSearchable
@@ -262,6 +283,14 @@ const User = () => {
                         <br></br>
                         <Select
                           isMulti
+                          onChange={(events) => {
+                            handleSelectSearchChange(
+                              "status",
+                              events.map((event) => {
+                                return event.label;
+                              })
+                            );
+                          }}
                           className="basic-multi-select"
                           classNamePrefix="select"
                           isSearchable
@@ -287,9 +316,13 @@ const User = () => {
                       <Box>
                         <label htmlFor="">{`Level:`}</label>
                         <br></br>
-
                         <Select
                           isClearable
+                          onChange={(event) => {
+                            if (event) {
+                              handleSelectSearchChange("level", event.label);
+                            }
+                          }}
                           className="basic-multi-select"
                           classNamePrefix="select"
                           isSearchable
@@ -313,7 +346,21 @@ const User = () => {
                     </Grid>
                     <Grid item xs={4}>
                       <FormControlLabel
-                        control={<Checkbox defaultChecked />}
+                        control={
+                          <Checkbox
+                            checked={selectSearchOptions.search.isModerator}
+                            onChange={() => {
+                              dispatch({
+                                type: "DEBOUNCE_INPUTSEARCH",
+                                payload: {
+                                  search: {
+                                    isModerator: !selectSearchOptions.search.isModerator,
+                                  },
+                                },
+                              });
+                            }}
+                          />
+                        }
                         label="Is Moderator"
                       />
                     </Grid>
@@ -321,42 +368,59 @@ const User = () => {
                 </SearchOptions>
               )}
               <Box>
-                <div className="content-container">
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        {columns.map((col, index) => (
-                          <TableCell key={index}>{col}</TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {users.map((user) => {
-                        return (
-                          <TableRow key={user.id}>
-                            <TableCell>{user.username}</TableCell>
-                            <TableCell>{user.name}</TableCell>
-                            <TableCell>{user.DOB}</TableCell>
-                            <TableCell
-                              sx={{
-                                maxWidth: 250,
-                                whiteSpace: "unset",
-                                wordBreak: "break-all",
-                              }}
-                            >
-                              {user.email}
-                            </TableCell>
-                            <TableCell sx={{ color: "var(--main-color)" }}>{user.phone}</TableCell>
-                            <TableCell>{user.location}</TableCell>
-                            <TableCell>{user.role}</TableCell>
-                            <TableCell>{user.lastUpdated}</TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className="pagination"></div>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((col, index) => (
+                        <TableCell key={index}>{col}</TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.list.map((user) => {
+                      return (
+                        <TableRow key={user._id}>
+                          <TableCell>{user.username}</TableCell>
+                          <TableCell>{user.lastName}</TableCell>
+                          <TableCell>
+                            {new Date(user.dob).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              maxWidth: 250,
+                              whiteSpace: "unset",
+                              wordBreak: "break-all",
+                            }}
+                          >
+                            {user.email}
+                          </TableCell>
+                          <TableCell sx={{ color: "var(--main-color)" }}>
+                            {(user.phone && user.phone[0]?.phoneNumber) || "false"}
+                          </TableCell>
+                          <TableCell>
+                            {(user.address && user.address[0]?.city) || "false"}
+                          </TableCell>
+                          <TableCell>{user.roles[0]}</TableCell>
+                          <TableCell>
+                            {`${new Date(user.updatedAt).getMonth()}/${new Date(
+                              user.updatedAt
+                            ).getDate()}/${new Date(user.updatedAt).getFullYear()}`}
+                          </TableCell>
+                          <TableCell>{(user.stn?.status && "true") || "false"}</TableCell>
+                          <TableCell>{user.stn?.levelId}</TableCell>
+                          <TableCell>{user.status}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                <PaginationStyle>
+                  <Paginations></Paginations>
+                </PaginationStyle>
               </Box>
             </Grid>
           </Grid>

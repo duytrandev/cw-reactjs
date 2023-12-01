@@ -1,4 +1,10 @@
-import { ButtonGroup, Dialog, styled as muiStyled } from "@mui/material";
+import {
+  Badge as BaseBadge,
+  ButtonGroup,
+  Dialog,
+  badgeClasses,
+  styled as muiStyled,
+} from "@mui/material";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -68,6 +74,41 @@ export const UserRef = styled.div`
   height: 100%;
 `;
 
+export const Badge = muiStyled(BaseBadge)(
+  () => `
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-family: IBM Plex Sans, sans-serif;
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  
+  & .${badgeClasses.badge} {
+    z-index: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 22px;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 12px;
+    background: #F44335;
+    transform: translate(60%, -70%);
+    transform-origin: 100% 0;
+  }
+  `
+);
+
 export const Container = styled.div`
   background-color: #fff;
   width: 90%;
@@ -75,6 +116,7 @@ export const Container = styled.div`
   margin: 0 auto;
   border-radius: 20px;
   padding: 0 20px;
+  overflow-x: inherit;
 `;
 
 export const HeaderContainer = styled.div`
@@ -91,8 +133,12 @@ export const UserFunction = styled.div`
     white-space: nowrap;
   }
   & .btn-search {
-    padding: 12px;
     font-size: 45px;
+    display: flex;
+    align-items: center;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -135,7 +181,6 @@ export const ModalHeader = styled.div`
     min-width: 28px;
     padding: 0;
   }
-  
 `;
 
 export const ModalButtonForm = muiStyled(ButtonGroup)(
@@ -166,7 +211,7 @@ export const ModalButtonForm = muiStyled(ButtonGroup)(
         width: 100%;
       }
       .Mui-selected {
-        color: white;
+        color: white !important;
         background-color: var(--main-color);
     }
 `
@@ -279,17 +324,23 @@ export const DateContainer = styled.div`
     border-color: transparent;
     margin-bottom: 15px;
     cursor: pointer;
-    .active{
-        background-color: var(--main-color);
+    .active {
+      background-color: var(--main-color);
     }
   }
   & .selected {
-    background-color: var(--main-color)
+    background-color: var(--main-color);
   }
 `;
 
-
-
-export const TimeSlotCol = styled.div``;
-
-export const TimeSlotBody = styled.div``;
+export const PaginationStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  .Mui-selected,
+  .Mui-disabled {
+    background-color: var(--main-color) !important;
+    color: white;
+  }
+`;
