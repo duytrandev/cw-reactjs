@@ -51,16 +51,16 @@ const User = () => {
     list: [],
   });
   useEffect(() => {
-    (async () => {
-      await new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve();
-          userAPI.getAll(selectSearchOptions).then((rs) => {
-            setUsers(rs);
-          });
-        }, 1000);
-      });
-    })();
+    // (async () => {
+    //   await new Promise<void>((resolve) => {
+    //     setTimeout(() => {
+    //       resolve();
+    //       userAPI.getAll(selectSearchOptions).then((rs) => {
+    //         setUsers(rs);
+    //       });
+    //     }, 1000);
+    //   });
+    // })();
   }, [selectSearchOptions]);
 
   // facilities api
@@ -115,7 +115,7 @@ const User = () => {
     "User Status",
   ];
   const [isSearched, setIsSearched] = useState(false);
-  const [popup, setPopup] = useState(false);
+  const [popup, setPopup] = useState(true);
   function handleClosePopup() {
     setPopup(false);
   }

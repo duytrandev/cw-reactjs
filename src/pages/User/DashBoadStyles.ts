@@ -148,7 +148,6 @@ export const SearchOptions = styled.div`
 
 export const DialogStyled = muiStyled(Dialog)(
   () => `
-    
     & .MuiDialog-container{
         max-width: 815px;
         width: 100%;

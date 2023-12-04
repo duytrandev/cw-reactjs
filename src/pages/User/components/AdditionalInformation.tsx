@@ -9,7 +9,7 @@ const AdditionalInformation = () => {
         <Box>
           <InputForm>
             <span>Bio: </span>
-            <TextareaAutosize style={{ width: "100%" }} minRows={7}></TextareaAutosize>
+            <TextareaAutosize style={{ width: "100%", padding: '10px' }} minRows={7}></TextareaAutosize>
           </InputForm>
         </Box>
       </form>
