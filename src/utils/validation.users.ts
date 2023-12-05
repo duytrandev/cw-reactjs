@@ -30,7 +30,7 @@ export const applicationsPrefrenceValidation = yup
 
 export const professionalDetailValidation = yup
   .object({
-    proDegree: yup.string().required(),
+    professionalDegree: yup.string().required(),
     specialty: yup.string().required(),
     allowedState: yup.array().of(yup.string()).length(1).required(),
   })

@@ -11,10 +11,10 @@ export interface PersonalDetailtFormFields {
   lastName: string;
   nickName: string;
   title: string;
-  genderIdentity: string;
+  gender: string;
   pronoun: string;
   preferredLanguage: string;
-  otherSpokenLanguage: string;
+  otherLanguages: string[];
   profileImage: string;
 }
 
@@ -184,7 +184,7 @@ const PersonalDetail = ({ control }: Props) => {
               <span>{`Gender Identity:`}</span>
               <Controller
                 control={control}
-                name="personalDetail.genderIdentity"
+                name="personalDetail.gender"
                 render={({ field: { onChange, ref }, fieldState: { error } }) => (
                   <>
                     <Select
@@ -256,8 +256,9 @@ const PersonalDetail = ({ control }: Props) => {
                   <>
                     <Select
                       ref={ref}
-                      onChange={(event) => {
-                        onChange(event?.value);
+                      isMulti
+                      onChange={(events) => {
+                        onChange(events.map((event) => event.value));
                       }}
                       classNames={{
                         control: () => (error ? "error-validation" : ""),
@@ -295,7 +296,7 @@ const PersonalDetail = ({ control }: Props) => {
               <span>{`Other Spoken Languages:`}</span>
               <Controller
                 control={control}
-                name="personalDetail.otherSpokenLanguage"
+                name="personalDetail.otherLanguages"
                 render={({ field: { onChange, ref } }) => (
                   <Select
                     ref={ref}

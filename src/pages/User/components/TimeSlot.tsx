@@ -13,9 +13,7 @@ import RoundedIcon from "./RoundedIcon";
 const TimeSlot = () => {
   const [startDate, setStartDate] = useState(new Date());
   const { monday, sunday } = getFirstAndLastDayOfWeek(startDate);
-  console.log(monday, sunday);
   const daysInWeek = getDaysBetween(monday, sunday);
-  console.log(daysInWeek);
   function handleSkipWeek() {
     const currentDate = new Date(startDate);
     currentDate.setDate(startDate.getDate() + 7);

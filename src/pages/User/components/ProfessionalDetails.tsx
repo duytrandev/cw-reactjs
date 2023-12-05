@@ -5,9 +5,9 @@ import InputForm from "./HOC/InputForm";
 import { MainForm } from "./Modal";
 
 export interface ProfessionalDetailFormFields {
-  proDegree: string;
+  professionalDegree: string;
   specialty: string;
-  yearOfExp: number;
+  yearsOfExperience: number;
   allowedState: string[];
 }
 
@@ -24,7 +24,7 @@ const ProfessionalDetail = ({ control }: Props) => {
             <span>Professional Degree</span>
             <Controller
               control={control}
-              name="professionalDetail.proDegree"
+              name="professionalDetail.professionalDegree"
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <>
                   <TextField
@@ -78,7 +78,7 @@ const ProfessionalDetail = ({ control }: Props) => {
             <span>Year Of Experience</span>
             <Controller
               control={control}
-              name="professionalDetail.yearOfExp"
+              name="professionalDetail.yearsOfExperience"
               render={({ field: { onChange, value }, fieldState: { error } }) => (
                 <>
                   <TextField

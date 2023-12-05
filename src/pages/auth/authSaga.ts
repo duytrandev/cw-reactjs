@@ -7,16 +7,12 @@ import { IAuth, IUser } from "../../models";
 
 function* handleLogin(payload: LogginPayload) {
   try {
-    console.log(`payload ${JSON.stringify(payload)}`)
     const {accessToken, expiresIn, refreshToken, ...user}: IAuth & IUser = yield call(authApi.login, payload)
     yield put(authActions.loginSuccess(user))
     localStorage.setItem('access_token', accessToken)
     localStorage.setItem('auth', JSON.stringify({accessToken, expiresIn, refreshToken}))
-    console.log({user, accessToken, refreshToken})
   } catch (error: any) {
-    console.log(1)
     yield put(authActions.loginFailure(error?.response?.data?.errors))
-    console.log(2)
   }
 }
 

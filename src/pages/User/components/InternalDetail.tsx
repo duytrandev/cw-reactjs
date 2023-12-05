@@ -5,13 +5,13 @@ import Select from "react-select";
 import InputForm from "./HOC/InputForm";
 import { MainForm } from "./Modal";
 export interface InternalDetailFormFields {
-  userType: string;
-  userName: string;
+  usertype: string;
+  username: string;
   roles: string[];
   facilities: string[];
   subFacilities: string[];
-  groups: string[];
-  NPI: string;
+  careGroupMaster: string[];
+  npi: string;
   externalId: string;
 }
 
@@ -31,7 +31,7 @@ const InternalDetail = ({ control, errors }: Props) => {
               <span>{`User Type:`}</span>
               <Controller
                 control={control}
-                name="internalDetail.userType"
+                name="internalDetail.usertype"
                 render={({ field: { onChange, onBlur, name, ref } }) => (
                   <Select
                     onChange={(event) => {
@@ -70,7 +70,7 @@ const InternalDetail = ({ control, errors }: Props) => {
               <span>{`Username:`}</span>
               <Controller
                 control={control}
-                name="internalDetail.userName"
+                name="internalDetail.username"
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     onChange={onChange}
@@ -215,7 +215,7 @@ const InternalDetail = ({ control, errors }: Props) => {
             <InputForm>
               <span>{`Group:`}</span>
               <Controller
-                name="internalDetail.groups"
+                name="internalDetail.careGroupMaster"
                 control={control}
                 render={({ field: { onChange, ref } }) => (
                   <Select
@@ -254,7 +254,7 @@ const InternalDetail = ({ control, errors }: Props) => {
               <span>{`NPI:`}</span>
               <Controller
                 control={control}
-                name="internalDetail.NPI"
+                name="internalDetail.npi"
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     onChange={onChange}

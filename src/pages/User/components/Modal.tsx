@@ -5,7 +5,7 @@ import { Box, Button, DialogTitle, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { notifications } from "../../../utils/constant";
+import { notifications, payloadAddUser } from "../../../utils/constant";
 import {
   applicationsPrefrenceValidation,
   contactDetailValidation,
@@ -53,13 +53,13 @@ const Modal = ({ popup, handleClosePopup }: Props) => {
   } = useForm<any>({
     defaultValues: {
       internalDetail: {
-        userType: "",
-        userName: "",
+        usertype: "Provider",
+        username: "",
         roles: [],
         facilities: [],
         subFacilities: [],
-        groups: [],
-        NPI: "",
+        careGroupMaster: [],
+        npi: "",
         externalId: "",
       },
       personalDetail: {
@@ -68,44 +68,47 @@ const Modal = ({ popup, handleClosePopup }: Props) => {
         lastName: "",
         nickName: "",
         title: "",
-        genderIdentity: "",
+        gender: "",
         pronoun: "",
         preferredLanguage: "",
-        otherSpokenLanguage: "",
+        otherLanguages: [],
         profileImage: "",
       },
       contactDetail: {
         email: "",
         billingAddress: {
-          address1: "",
-          address2: "",
+          line1: "",
+          line2: "",
           city: "",
-          state: "",
+          stateProvince: "AL",
           postalCode: "",
         },
         shippingAddress: {
-          address1: "",
-          address2: "",
+          line1: "",
+          line2: "",
           city: "",
-          state: "",
+          stateProvince: "AL",
           postalCode: "",
         },
         phoneNumber: "",
         phoneType: "",
         bestTimeToCall: "",
         sameAddress: false,
+        address: [],
+        phone: [{}]
       },
       applicationsPrefrence: {
         noti: notifications.map((e) => e.label),
-        optStatus: "",
+        optInStatus: "",
         displayLanguage: "",
         timezone: "",
+        notifications: {}
       },
       professionalDetail: {
         allowedState: [],
-        proDegree: "",
+        professionalDegree: "",
         specialty: "",
-        yearOfExp: 0,
+        yearsOfExperience: 0,
       },
       additionalinfo: {
         bio: "",
@@ -114,20 +117,54 @@ const Modal = ({ popup, handleClosePopup }: Props) => {
     mode: "all",
     resolver: yupResolver(
       yup.object({
-        internalDetail: internalDetailtValidation,
-        personalDetail: personalDetailValidation,
-        contactDetail: contactDetailValidation,
-        applicationsPrefrence: applicationsPrefrenceValidation,
-        professionalDetail: professionalDetailValidation,
+        // internalDetail: internalDetailtValidation,
+        // personalDetail: personalDetailValidation,
+        // contactDetail: contactDetailValidation,
+        // applicationsPrefrence: applicationsPrefrenceValidation,
+        // professionalDetail: professionalDetailValidation,
       })
     ),
   });
-  console.log(isValid, errors);
+  console.log(isValid);
   function onSubmit(data: MainForm) {
+    console.log(data);
+    
     if (data.contactDetail.sameAddress) {
       data.contactDetail.shippingAddress = data.contactDetail.billingAddress;
+      
     }
-    console.log(data.additionalinfo);
+    data.contactDetail.address = [
+      { addressType: "SHIPPING", ...data.contactDetail.shippingAddress },
+      { addressType: "BILLING", ...data.contactDetail.shippingAddress },
+      
+    ];
+    data.contactDetail.phone = [{
+      phoneNumber: data.contactDetail.phoneNumber,
+      communicationType: "MOBILE",
+      availableTime: "MOBILE",
+    }]
+    data.applicationsPrefrence.notifications = {
+      email: {
+        ...data.applicationsPrefrence.noti
+      },
+      pushNotifications: true,
+      sms: true,
+      voice: true
+    }
+    const fields = Object.values(data).reduce((acc, cur) => {
+      return { ...acc, ...cur };
+    }, {
+      status: "ACTIVE",
+      initialAppointmentDoctorId: "",
+      info: "",
+
+      providerState: [
+        "AL"
+      ], groups: [], availability: [], dob: "", medicalInfo: {}, navigator: "",isModerator: false, updateScheduling: false, userPreferences: {}});
+    
+    const payload = Object.keys(fields).filter(e => payloadAddUser.includes(e))
+    // console.log({attributes: payload, without_veryfi: false });
+    
   }
 
   const handleChange = (_event: SyntheticEvent, newValue: string) => {

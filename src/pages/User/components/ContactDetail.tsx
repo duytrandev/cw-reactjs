@@ -20,22 +20,24 @@ export interface ContactDetailFormFields {
   email: string;
   billingAddress: {
     city: string;
-    state: string;
+    stateProvince: string;
     postalCode: string;
-    address1: string;
-    address2: string;
+    line1: string;
+    line2: string;
   };
   shippingAddress: {
     city: string;
-    state: string;
-    address1: string;
-    address2: string;
+    stateProvince: string;
+    line1: string;
+    line2: string;
     postalCode: string;
   };
   phoneNumber: string;
   phoneType: string;
   bestTimeToCall: string;
   sameAddress: boolean;
+  address: object[],
+  phone: object[]
 }
 
 interface Props {
@@ -78,7 +80,7 @@ const ContactDetail = ({ control }: Props) => {
           </LabelInput>
           <Controller
             control={control}
-            name="contactDetail.billingAddress.address1"
+            name="contactDetail.billingAddress.line1"
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
                 onChange={onChange}
@@ -122,7 +124,6 @@ const ContactDetail = ({ control }: Props) => {
                       });
                     }}
                     onChange={() => {
-                      console.log(sameBilling);
                       onChange(sameBilling);
                     }}
                   />
@@ -145,7 +146,7 @@ const ContactDetail = ({ control }: Props) => {
             >
               <Controller
                 control={control}
-                name="contactDetail.shippingAddress.address1"
+                name="contactDetail.shippingAddress.line1"
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     onChange={onChange}

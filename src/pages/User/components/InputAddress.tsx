@@ -15,7 +15,7 @@ const InputAddress = ({ control, addressType }: Props) => {
       <Grid item xs={12}>
         <Controller
           control={control}
-          name={`contactDetail.${addressType}.address2`}
+          name={`contactDetail.${addressType}.line2`}
           render={({ field: { onChange, value }, fieldState: { error } }) => (
             <TextField
               onChange={onChange}
@@ -55,7 +55,7 @@ const InputAddress = ({ control, addressType }: Props) => {
           <InputForm>
             <Controller
               control={control}
-              name={`contactDetail.${addressType}.state`}
+              name={`contactDetail.${addressType}.stateProvince`}
               render={({ field: { onChange, ref } }) => (
                 <Select
                   onChange={(event) => {

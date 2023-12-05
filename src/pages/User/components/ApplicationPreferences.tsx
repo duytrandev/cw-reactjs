@@ -10,6 +10,7 @@ export interface ApplicationPrefrenceFormFields {
   optStatus: string;
   displayLanguage: string;
   timezone: string;
+  notifications: object
 }
 
 interface Props {
@@ -108,9 +109,9 @@ const ApplicationPreference = ({ control }: Props) => {
                       isSearchable
                       name="colors"
                       options={[
-                        { value: "12ss", label: "Tiếng Việt" },
-                        { value: "123", label: "English" },
-                        { value: "12d", label: "Spanish" },
+                        { value: "vi", label: "Tiếng Việt" },
+                        { value: "en", label: "English" },
+                        { value: "spa", label: "Spanish" },
                       ]}
                       styles={{
                         control: (baseStyles) => ({
