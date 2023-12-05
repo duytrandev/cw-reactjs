@@ -1,16 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { yupResolver } from "@hookform/resolvers/yup";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Box, Button, DialogTitle, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ButtonContainer, DialogStyled, ModalButtonForm, ModalHeader } from "../DashBoadStyles";
-import AdditionalInformation from "./AdditionalInformation";
+import * as yup from "yup";
+import { notifications } from "../../../utils/constant";
+import {
+  applicationsPrefrenceValidation,
+  contactDetailValidation,
+  internalDetailtValidation,
+  personalDetailValidation,
+  professionalDetailValidation,
+} from "../../../utils/validation.users";
+import {
+  ButtonContainer,
+  DialogStyled,
+  FormAddUserStyled,
+  ModalButtonForm,
+  ModalHeader,
+} from "../DashBoadStyles";
+import AdditionalInformation, { AdditionalInfoFormFields } from "./AdditionalInformation";
 import ApplicationPreference, { ApplicationPrefrenceFormFields } from "./ApplicationPreferences";
 import ContactDetail, { ContactDetailFormFields } from "./ContactDetail";
 import InternalDetail, { InternalDetailFormFields } from "./InternalDetail";
 import PersonalDetail, { PersonalDetailtFormFields } from "./PersonalDetail";
 import ProfessionalDetail, { ProfessionalDetailFormFields } from "./ProfessionalDetails";
 import TimeSlot from "./TimeSlot";
-import { notifications } from "../../../utils/constant";
 
 interface Props {
   popup: boolean;
@@ -18,18 +34,23 @@ interface Props {
   handleClosePopup?: () => void;
 }
 
-export interface MainForm {
+export type MainForm = {
   internalDetail: InternalDetailFormFields;
   personalDetail: PersonalDetailtFormFields;
   contactDetail: ContactDetailFormFields;
   applicationsPrefrence: ApplicationPrefrenceFormFields;
-  professionalDetail: ProfessionalDetailFormFields
-}
+  professionalDetail: ProfessionalDetailFormFields;
+  additionalinfo: AdditionalInfoFormFields;
+};
 
 const Modal = ({ popup, handleClosePopup }: Props) => {
   const [subForm, setSubForm] = useState("Internal Details");
-  const [disabledBtn, setDisableBtn] = useState(true);
-  const { control, handleSubmit } = useForm<MainForm>({
+  // const [disabledBtn, setDisableBtn] = useState(true);
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid, errors },
+  } = useForm<any>({
     defaultValues: {
       internalDetail: {
         userType: "",
@@ -75,34 +96,49 @@ const Modal = ({ popup, handleClosePopup }: Props) => {
         sameAddress: false,
       },
       applicationsPrefrence: {
-        noti: notifications.map(e=> e.label),
-        optStatus: '',
-        displayLanguage: '',
-        timezone: ''
+        noti: notifications.map((e) => e.label),
+        optStatus: "",
+        displayLanguage: "",
+        timezone: "",
       },
       professionalDetail: {
         allowedState: [],
         proDegree: "",
-        specialty: '',
-        yearOfExp: 0
-      }
+        specialty: "",
+        yearOfExp: 0,
+      },
+      additionalinfo: {
+        bio: "",
+      },
     },
+    mode: "all",
+    resolver: yupResolver(
+      yup.object({
+        internalDetail: internalDetailtValidation,
+        personalDetail: personalDetailValidation,
+        contactDetail: contactDetailValidation,
+        applicationsPrefrence: applicationsPrefrenceValidation,
+        professionalDetail: professionalDetailValidation,
+      })
+    ),
   });
-
+  console.log(isValid, errors);
   function onSubmit(data: MainForm) {
     if (data.contactDetail.sameAddress) {
       data.contactDetail.shippingAddress = data.contactDetail.billingAddress;
     }
-    console.log(data.professionalDetail);
+    console.log(data.additionalinfo);
   }
-  const errors = {};
 
   const handleChange = (_event: SyntheticEvent, newValue: string) => {
-    if (Object.keys(errors).length < 1) {
-      setDisableBtn((prev) => !prev);
-      setSubForm(newValue);
-    }
+    // if (Object.keys(errors).length < 1) {
+    //   setDisableBtn((prev) => !prev);
+    // }
+    console.log(_event, newValue);
+    setSubForm(newValue);
   };
+
+  function handleClickBackPrevForm() {}
 
   return (
     <DialogStyled open={popup} fullWidth>
@@ -139,29 +175,31 @@ const Modal = ({ popup, handleClosePopup }: Props) => {
           </Tabs>
         </Box>
       </ModalButtonForm>
-      <form action="" onSubmit={handleSubmit(onSubmit)} style={{
-        overflowX: 'visible'
-      }}>
-        {subForm === "Internal Details" && <InternalDetail control={control} />}
+      <FormAddUserStyled action="" onSubmit={handleSubmit(onSubmit)} id="add-user-form">
+        {subForm === "Internal Details" && <InternalDetail control={control} errors={errors} />}
         {subForm === "Personal Details" && <PersonalDetail control={control} />}
         {subForm === "Contact Details" && <ContactDetail control={control} />}
-        {subForm === "Application Preferences" && <ApplicationPreference control={control}/>}
+        {subForm === "Application Preferences" && <ApplicationPreference control={control} />}
         {subForm === "Professional Details" && <ProfessionalDetail control={control} />}
         {subForm === "Time Slots" && <TimeSlot />}
-        {subForm === "Additional Infomation" && <AdditionalInformation />}
+        {subForm === "Additional Infomation" && <AdditionalInformation control={control} />}
         <ButtonContainer>
-          {subForm !== "Internal Details" && <Button variant="outlined">Back</Button>}
-          <Button variant="contained" type="submit">
+          {subForm !== "Internal Details" && (
+            <Button variant="outlined" onClick={handleClickBackPrevForm}>
+              Back
+            </Button>
+          )}
+          <Button variant="contained" disabled={Object.keys(errors).length > 0} type="submit">
             Next
           </Button>
-          <Button variant="contained" disabled={disabledBtn}>
+          <Button variant="contained" disabled={Object.keys(errors).length > 0}>
             Finish
           </Button>
           <Button variant="contained" disabled>
             Add without verify
           </Button>
         </ButtonContainer>
-      </form>
+      </FormAddUserStyled>
     </DialogStyled>
   );
 };

@@ -229,8 +229,23 @@ export const LabelInput = styled.div`
   align-items: center;
 `;
 
+export const FormAddUserStyled = styled.form`
+  .error-validation.select__control {
+    border: 2px solid red;
+    box-shadow: 0 0 3px red;
+  }
+  span.error-validation {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+  }
+  .Mui-error {
+    border: 2px solid red;
+    border-radius: 4px;
+  }
+`;
+
 export const TimeSlotStyled = styled.div`
-  overflow-y: scroll;
   .date-picker {
     text-align: center;
   }
@@ -273,7 +288,7 @@ export const NavTimeSlot = styled.div`
 
 export const TimeSlotTable = styled.div`
   border: 1px solid #444;
-  width: 765px;
+  width: 100%;
   height: 760px;
   margin-top: 15px;
   overflow-y: scroll;

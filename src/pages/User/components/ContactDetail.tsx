@@ -54,16 +54,19 @@ const ContactDetail = ({ control }: Props) => {
               control={control}
               name="contactDetail.email"
               render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <TextField
-                  onChange={onChange}
-                  value={value}
-                  error={!!error}
-                  fullWidth
-                  style={{
-                    minHeight: "53.7px",
-                    marginTop: "3px",
-                  }}
-                />
+                <>
+                  <TextField
+                    onChange={onChange}
+                    value={value}
+                    error={!!error}
+                    fullWidth
+                    style={{
+                      minHeight: "53.7px",
+                      marginTop: "3px",
+                    }}
+                  />
+                  {error && <span className="error-validation">The Email field is required</span>}
+                </>
               )}
             />
           </InputForm>

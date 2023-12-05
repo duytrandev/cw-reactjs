@@ -1,7 +1,7 @@
 import { DialogContent, Grid, TextField } from "@mui/material";
+import { Control, Controller } from "react-hook-form";
 import Select from "react-select";
 import InputForm from "./HOC/InputForm";
-import { Control, Controller } from "react-hook-form";
 import { MainForm } from "./Modal";
 
 export interface ProfessionalDetailFormFields {
@@ -17,9 +17,7 @@ interface Props {
 
 const ProfessionalDetail = ({ control }: Props) => {
   return (
-    <DialogContent sx={{
-      overflowX: 'visible'
-    }}>
+    <DialogContent>
       <Grid container spacing={3}>
         <Grid item xs={4}>
           <InputForm required>
@@ -27,16 +25,24 @@ const ProfessionalDetail = ({ control }: Props) => {
             <Controller
               control={control}
               name="professionalDetail.proDegree"
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
-                  style={{
-                    minHeight: "53.7px",
-                    marginTop: "3px",
-                  }}
-                />
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    onChange={onChange}
+                    value={value}
+                    error={!!error}
+                    fullWidth
+                    style={{
+                      minHeight: "53.7px",
+                      marginTop: "3px",
+                    }}
+                  />
+                  {error && (
+                    <span className="error-validation">
+                      The Professional Degree field is required.
+                    </span>
+                  )}
+                </>
               )}
             />
           </InputForm>
@@ -47,16 +53,22 @@ const ProfessionalDetail = ({ control }: Props) => {
             <Controller
               control={control}
               name="professionalDetail.specialty"
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
-                  style={{
-                    minHeight: "53.7px",
-                    marginTop: "3px",
-                  }}
-                />
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    onChange={onChange}
+                    value={value}
+                    error={!!error}
+                    fullWidth
+                    style={{
+                      minHeight: "53.7px",
+                      marginTop: "3px",
+                    }}
+                  />
+                  {error && (
+                    <span className="error-validation">The Specialty field is required.</span>
+                  )}
+                </>
               )}
             />
           </InputForm>
@@ -67,17 +79,25 @@ const ProfessionalDetail = ({ control }: Props) => {
             <Controller
               control={control}
               name="professionalDetail.yearOfExp"
-              render={({ field: { onChange, value } }) => (
-                <TextField
-                  type="number"
-                  onChange={onChange}
-                  value={value}
-                  fullWidth
-                  style={{
-                    minHeight: "53.7px",
-                    marginTop: "3px",
-                  }}
-                />
+              render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <>
+                  <TextField
+                    type="number"
+                    onChange={onChange}
+                    value={value}
+                    error={!!error}
+                    fullWidth
+                    style={{
+                      minHeight: "53.7px",
+                      marginTop: "3px",
+                    }}
+                  />
+                  {error && (
+                    <span className="error-validation">
+                      The Years of Experience field is required.
+                    </span>
+                  )}
+                </>
               )}
             />
           </InputForm>
@@ -88,31 +108,38 @@ const ProfessionalDetail = ({ control }: Props) => {
             <Controller
               control={control}
               name="professionalDetail.allowedState"
-              render={({ field: { onChange } }) => (
-                <Select
-                  onChange={(events) => {
-                    onChange(events.map((event) => event.label));
-                  }}
-                  isMulti
-                  className="basic-select"
-                  classNamePrefix="select"
-                  isSearchable
-                  name="colors"
-                  options={[
-                    { value: "12ss", label: "Alaska" },
-                    { value: "123", label: "Alabama" },
-                    { value: "12ss", label: "Texas" },
-                    { value: "123", label: "Washington" },
-                  ]}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      minHeight: "53.7px",
-                      marginTop: "3px",
-                      overflowX: 'visible'
-                    }),
-                  }}
-                />
+              render={({ field: { onChange }, fieldState: { error } }) => (
+                <>
+                  <Select
+                    onChange={(events) => {
+                      onChange(events.map((event) => event.label));
+                    }}
+                    isMulti
+                    classNames={{ control: () => (error ? "error-validation" : "") }}
+                    classNamePrefix="select"
+                    isSearchable
+                    name="colors"
+                    options={[
+                      { value: "12ss", label: "Alaska" },
+                      { value: "123", label: "Alabama" },
+                      { value: "12ss", label: "Texas" },
+                      { value: "123", label: "Washington" },
+                    ]}
+                    styles={{
+                      control: (baseStyles) => ({
+                        ...baseStyles,
+                        minHeight: "53.7px",
+                        marginTop: "3px",
+                        overflowX: "visible",
+                      }),
+                    }}
+                  />
+                  {error && (
+                    <span className="error-validation">
+                      The Allowed States must have at least 1 item.
+                    </span>
+                  )}
+                </>
               )}
             />
           </InputForm>

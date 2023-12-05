@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, DialogContent, Grid, TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import Select from "react-select";
@@ -16,8 +17,11 @@ export interface InternalDetailFormFields {
 
 interface Props {
   control: Control<MainForm>;
+  errors: any;
 }
-const InternalDetail = ({ control }: Props) => {
+
+const InternalDetail = ({ control, errors }: Props) => {
+  const { internalDetail } = errors;
   return (
     <DialogContent>
       <Grid container spacing={3}>
@@ -28,10 +32,10 @@ const InternalDetail = ({ control }: Props) => {
               <Controller
                 control={control}
                 name="internalDetail.userType"
-                render={({ field: { onChange, onBlur, name, ref }}) => (
+                render={({ field: { onChange, onBlur, name, ref } }) => (
                   <Select
-                    onChange={(event)=>{
-                      onChange(event?.value)
+                    onChange={(event) => {
+                      onChange(event?.value);
                     }}
                     ref={ref}
                     onBlur={onBlur}
@@ -90,15 +94,17 @@ const InternalDetail = ({ control }: Props) => {
               <Controller
                 name="internalDetail.roles"
                 control={control}
-                render={({
-                  field: { onChange, onBlur, name, ref }
-                }) => (
+                render={({ field: { onChange, onBlur, name, ref } }) => (
                   <Select
-                    onChange={(events)=>{
-                      onChange(events.map(event => event.value))}}
+                    onChange={(events) => {
+                      onChange(events.map((event) => event.value));
+                    }}
                     onBlur={onBlur}
                     name={name}
                     ref={ref}
+                    classNames={{
+                      control: () => (internalDetail?.roles ? "error-validation" : ""),
+                    }}
                     isMulti
                     className="basic-multi-select"
                     classNamePrefix="select"
@@ -120,6 +126,9 @@ const InternalDetail = ({ control }: Props) => {
                   />
                 )}
               />
+              {internalDetail?.roles && (
+                <span className="error-validation">The Roles must have at least one item</span>
+              )}
             </InputForm>
           </Box>
         </Grid>
@@ -130,10 +139,11 @@ const InternalDetail = ({ control }: Props) => {
               <Controller
                 control={control}
                 name="internalDetail.facilities"
-                render={({field: {onChange, ref}}) => (
+                render={({ field: { onChange, ref } }) => (
                   <Select
-                    onChange={(events)=>{
-                      onChange(events.map(event => event.value))}}
+                    onChange={(events) => {
+                      onChange(events.map((event) => event.value));
+                    }}
                     isMulti
                     ref={ref}
                     className="basic-multi-select"
@@ -168,10 +178,11 @@ const InternalDetail = ({ control }: Props) => {
               <Controller
                 name="internalDetail.subFacilities"
                 control={control}
-                render={({field: {onChange, ref}}) => (
+                render={({ field: { onChange, ref } }) => (
                   <Select
-                    onChange={(events)=>{
-                      onChange(events.map(event => event.value))}}
+                    onChange={(events) => {
+                      onChange(events.map((event) => event.value));
+                    }}
                     isMulti
                     ref={ref}
                     className="basic-multi-select"
@@ -206,10 +217,11 @@ const InternalDetail = ({ control }: Props) => {
               <Controller
                 name="internalDetail.groups"
                 control={control}
-                render={({ field: {onChange, ref} }) => (
+                render={({ field: { onChange, ref } }) => (
                   <Select
-                    onChange={(events)=>{
-                      onChange(events.map(event => event.value))}}
+                    onChange={(events) => {
+                      onChange(events.map((event) => event.value));
+                    }}
                     isMulti
                     ref={ref}
                     className="basic-multi-select"

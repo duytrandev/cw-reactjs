@@ -1,9 +1,9 @@
 import { Box, DialogContent, Grid } from "@mui/material";
+import { Control, Controller } from "react-hook-form";
 import Select from "react-select";
+import { notifications } from "../../../utils/constant";
 import InputForm from "./HOC/InputForm";
 import { MainForm } from "./Modal";
-import { Control, Controller } from "react-hook-form";
-import { notifications } from "../../../utils/constant";
 
 export interface ApplicationPrefrenceFormFields {
   noti: string[];
@@ -93,28 +93,39 @@ const ApplicationPreference = ({ control }: Props) => {
               <Controller
                 control={control}
                 name="applicationsPrefrence.displayLanguage"
-                render={({ field: { onChange } }) => (
-                  <Select
-                    onChange={(event) => {
-                      onChange(event?.label);
-                    }}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    isSearchable
-                    name="colors"
-                    options={[
-                      { value: "12ss", label: "Tiếng Việt" },
-                      { value: "123", label: "English" },
-                      { value: "12d", label: "Spanish" },
-                    ]}
-                    styles={{
-                      control: (baseStyles) => ({
-                        ...baseStyles,
-                        minHeight: "53.7px",
-                        marginTop: "3px",
-                      }),
-                    }}
-                  />
+                render={({ field: { onChange }, fieldState: { error } }) => (
+                  <>
+                    <Select
+                      onChange={(event) => {
+                        onChange(event?.label);
+                      }}
+                      classNames={{
+                        control: () => {
+                          return error ? "error-validation" : "";
+                        },
+                      }}
+                      classNamePrefix="select"
+                      isSearchable
+                      name="colors"
+                      options={[
+                        { value: "12ss", label: "Tiếng Việt" },
+                        { value: "123", label: "English" },
+                        { value: "12d", label: "Spanish" },
+                      ]}
+                      styles={{
+                        control: (baseStyles) => ({
+                          ...baseStyles,
+                          minHeight: "53.7px",
+                          marginTop: "3px",
+                        }),
+                      }}
+                    />
+                    {error && (
+                      <span className="error-validation">
+                        The Display Language field is required.
+                      </span>
+                    )}
+                  </>
                 )}
               />
             </InputForm>
